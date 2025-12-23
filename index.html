@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Portfolio</title>
+    <style>
+        :root {
+            --bg-color: #fceef5; /* 연분홍 배경 */
+            --sidebar-color: #ffffff;
+            --point-purple: #6a1b9a;
+            --point-pink: #ad1457;
+            --list-hover: #f3e5f5; /* 연보라 강조 */
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-color);
+            font-family: -apple-system, sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh;
+        }
+
+        /* 아이맥 윈도우 컨테이너 (이미지 레이아웃 반영) */
+        .imac-container {
+            width: 90vw; max-width: 1000px; height: 75vh;
+            background: #fff; border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        /* 상단 바 */
+        .header-bar {
+            height: 40px; background: #f6f6f6; border-bottom: 1px solid #eee;
+            display: flex; align-items: center; padding: 0 15px; gap: 8px;
+        }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
+
+        .main-layout { display: flex; flex: 1; overflow: hidden; }
+
+        /* 왼쪽 사이드바 (프로필 및 하트 메뉴) */
+        .sidebar {
+            width: 280px; background: #fff; border-right: 1px solid #f0f0f0;
+            display: flex; flex-direction: column; align-items: center; padding: 40px 20px;
+            text-align: center;
+        }
+        .profile-img {
+            width: 120px; height: 120px; border-radius: 35px;
+            background: #eee; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            object-fit: cover;
+        }
+        .profile-name { font-size: 1.3rem; font-weight: bold; color: var(--point-pink); margin-bottom: 10px; }
+        .profile-bio { font-size: 0.85rem; color: #777; line-height: 1.6; margin-bottom: 30px; }
+
+        /* 하트 메뉴 (이미지 스타일) */
+        .heart-menu { display: flex; gap: 15px; margin-bottom: 30px; }
+        .heart-btn { 
+            background: none; border: none; cursor: pointer; 
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            transition: transform 0.2s;
+        }
+        .heart-btn:hover { transform: scale(1.1); }
+        .heart-btn span { font-size: 0.7rem; color: #999; font-weight: bold; }
+        .heart-icon { color: #b2dfdb; font-size: 1.5rem; } /* 기본 하트 색상 (이미지 참고) */
+        .heart-btn.active .heart-icon { color: var(--point-pink); }
+
+        .contact-info { font-size: 0.8rem; color: #999; margin-top: auto; }
+
+        /* 오른쪽 콘텐츠 영역 */
+        .content-area { flex: 1; background: #fafafa; padding: 40px; overflow-y: auto; }
+        .section-title { font-size: 1.5rem; font-weight: bold; color: #333; margin-bottom: 25px; }
+
+        /* 목록형 아이템 (Q&A 스타일) */
+        .list-item {
+            background: #ffffff; padding: 18px 25px; border-radius: 15px;
+            margin-bottom: 12px; cursor: pointer; transition: 0.3s;
+            border: 1px solid #f0f0f0; display: flex; align-items: center;
+        }
+        .list-item:hover { background: var(--list-hover); border-color: var(--main-pink); }
+        .list-item-title { font-weight: 500; color: #444; flex: 1; }
+
+        /* 콘텐츠 상세 보기 */
+        .viewer { display: none; }
+        .back-link { color: var(--point-pink); cursor: pointer; font-size: 0.9rem; margin-bottom: 20px; display: inline-block; }
+        .media-box { width: 100%; border-radius: 15px; overflow: hidden; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        video, img { width: 100%; display: block; }
+        iframe { width: 100%; height: 500px; border: none; }
+    </style>
+</head>
+<body>
+
+<div class="imac-container">
+    <div class="header-bar">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+    </div>
+
+    <div class="main-layout">
+        <aside class="sidebar">
+            <img src="profile.jpg" alt="Profile" class="profile-img" onerror="this.src='https://via.placeholder.com/120'">
+            <div class="profile-name">오현빈</div>
+            <p class="profile-bio">감각적인 영상을 제작하는<br>비디오 크리에이터입니다.</p>
+            
+            <div class="heart-menu">
+                <button class="heart-btn active" onclick="loadList('video')">
+                    <div class="heart-icon">♥</div><span>Video</span>
+                </button>
+                <button class="heart-btn" onclick="loadList('pdf')">
+                    <div class="heart-icon">♥</div><span>PDF</span>
+                </button>
+                <button class="heart-btn" onclick="loadList('image')">
+                    <div class="heart-icon">♥</div><span>Image</span>
+                </button>
+            </div>
+
+            <div class="contact-info">
+                Contact<br>bindi1231@naver.com
+            </div>
+        </aside>
+
+        <main class="content-area" id="content-area">
+            <div id="list-section">
+                <div class="section-title" id="cat-title">Video Portfolio</div>
+                <div id="item-list">
+                    </div>
+            </div>
+
+            <div id="view-section" class="viewer">
+                <div class="back-link" onclick="closeViewer()">← 목록으로 돌아가기</div>
+                <div class="media-box" id="media-content"></div>
+                <h3 id="media-title" style="margin-top:20px; color:var(--point-purple);"></h3>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    const data = {
+        video: [
+            { title: "2025 모션 그래픽 작업물", src: "videos/video1.mp4", type: "video" },
+            { title: "브랜드 홍보 영상", src: "videos/video2.mp4", type: "video" }
+        ],
+        pdf: [
+            { title: "기획안 및 포트폴리오.pdf", src: "docs/portfolio.pdf", type: "pdf" }
+        ],
+        image: [
+            { title: "디자인 아트웍 #01", src: "images/art1.jpg", type: "image" }
+        ]
+    };
+
+    let currentCat = 'video';
+
+    function loadList(cat) {
+        currentCat = cat;
+        // 메뉴 활성화 표시
+        document.querySelectorAll('.heart-btn').forEach(btn => btn.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        
+        document.getElementById('cat-title').innerText = cat.toUpperCase() + " Showcase";
+        document.getElementById('list-section').style.display = 'block';
+        document.getElementById('view-section').style.display = 'none';
+
+        const listContainer = document.getElementById('item-list');
+        listContainer.innerHTML = data[cat].map((item, index) => `
+            <div class="list-item" onclick="openViewer(${index})">
+                <div class="list-item-title">Q. ${item.title}</div>
+            </div>
+        `).join('');
+    }
+
+    function openViewer(index) {
+        const item = data[currentCat][index];
+        document.getElementById('list-section').style.display = 'none';
+        document.getElementById('view-section').style.display = 'block';
+        
+        const content = document.getElementById('media-content');
+        document.getElementById('media-title').innerText = item.title;
+
+        if (item.type === 'video') {
+            content.innerHTML = `<video src="${item.src}" controls autoplay></video>`;
+        } else if (item.type === 'pdf') {
+            content.innerHTML = `<iframe src="${item.src}"></iframe>`;
+        } else {
+            content.innerHTML = `<img src="${item.src}">`;
+        }
+    }
+
+    function closeViewer() {
+        document.getElementById('list-section').style.display = 'block';
+        document.getElementById('view-section').style.display = 'none';
+        document.querySelectorAll('video').forEach(v => v.pause());
+    }
+
+    // 초기 실행
+    window.onload = () => loadList('video');
+</script>
+
+</body>
+</html>
