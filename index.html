@@ -137,8 +137,8 @@
 <script>
     const data = {
         video: [
-            { title: "aespa 'Drama' Teaser", src: "https://youtu.be/tYK9YjY1JaY", type: "youtube" },
-            { title: "어플 홍보 영상", src: "https://youtu.be/Nfia44xXK3o", type: "youtube" }
+            { title: "aespa 'Drama' Teaser", src: "videos/video1.mp4", type: "video" },
+            { title: "어플 홍보 영상", src: "videos/video2.mp4", type: "video" }
         ],
         pdf: [
             { title: "기획안 및 포트폴리오.pdf", src: "docs/portfolio.pdf", type: "pdf" }
@@ -168,33 +168,22 @@
         `).join('');
     }
 
-    function openViewer(index) {
-    const item = data[currentCat][index];
-    document.getElementById('list-section').style.display = 'none';
-    const viewSection = document.getElementById('view-section');
-    viewSection.style.display = 'block';
-    
-    const content = document.getElementById('media-content');
-    document.getElementById('media-title').innerText = item.title;
+function openViewer(index) {
+        const item = data[currentCat][index];
+        document.getElementById('list-section').style.display = 'none';
+        document.getElementById('view-section').style.display = 'block';
+        
+        const content = document.getElementById('media-content');
+        document.getElementById('media-title').innerText = item.title;
 
-    if (item.type === 'youtube') {
-        // 유튜브용 iframe 구조
-        content.innerHTML = `
-            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 15px;">
-                <iframe src="${item.src}" 
-                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                </iframe>
-            </div>`;
-    } else if (item.type === 'video') {
-        content.innerHTML = `<video src="${item.src}" controls autoplay></video>`;
-    } else if (item.type === 'pdf') {
-        content.innerHTML = `<iframe src="${item.src}" style="width:100%; height:500px; border:none;"></iframe>`;
-    } else {
-        content.innerHTML = `<img src="${item.src}">`;
+        if (item.type === 'video') {
+            content.innerHTML = `<video src="${item.src}" controls autoplay></video>`;
+        } else if (item.type === 'pdf') {
+            content.innerHTML = `<iframe src="${item.src}"></iframe>`;
+        } else {
+            content.innerHTML = `<img src="${item.src}">`;
+        }
     }
-}
 
     function closeViewer() {
         document.getElementById('list-section').style.display = 'block';
